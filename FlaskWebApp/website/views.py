@@ -15,6 +15,13 @@ import pandas as pd
 import os
 
 views = Blueprint('views',__name__)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+# pd.set_option('display.width', 220)
+
+static_folder = os.path.join(views.root_path, 'static')
+file_path = os.path.join(static_folder, 'uiuc-gpa-dataset2023.csv') 
+df = pd.read_csv(file_path)
 
 @views.route('/home', methods=['GET','POST'])
 @login_required
@@ -37,28 +44,45 @@ def home():
 @views.route('/course', methods=['GET','POST'])
 @login_required
 def course():
+    info = 'Nothing'
     if request.method == 'POST':
-        course =request.form.get('note')
         try:
-            course = course.upper()
-            subject = 'A'
-            number = 1
-            count = 0
-            for char in course:
-                if char.isalpha():
-                    count += 1
-                    continue
-                else:
-                    subject = course[:count]
-                    number = int(course[count:])
-                    break
+            if  not request.form.get('subject').upper() or not request.form.get('number'):
+                flash('The course does not exist', category='error')
+                return render_template("course.html", user=current_user, info=info)
+            subject = request.form.get('subject').upper()
+            number = int(request.form.get('number'))
             course_df = get_course_GPA(subject,number)
-            flash('Done', category='successful')
+            info = str(course_df)
+            if len(info) < 220:
+                flash('The course does not exist', category='error')
         except:
             print(subject+str(number))
             flash('The course does not exist', category='error')
     
-    return render_template("course.html", user=current_user)
+    return render_template("course.html", user=current_user, info=info)
+
+
+@views.route('/application', methods=['GET','POST'])
+@login_required
+def application():
+    if request.method == 'POST':
+        univ = request.form.get('univ')
+        try:
+
+            flash('University added!', category='success')           
+        except:
+            flash('Stock Code Error! The stock code doesn\'t exists', category='error')
+
+    return render_template("application.html", user=current_user)
+
+@views.route('/application/<symbol>')
+def application_detail(symbol):
+    # for note in current_user.notes:
+    #     if note.data == symbol:
+    #         stock = note
+
+    return render_template("college.html", user = current_user)
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():
@@ -103,14 +127,7 @@ def calculate_ap(row):
     return AP*100
 
 def get_course_GPA(subject,number):
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    static_folder = os.path.join(views.root_path, 'static')
-    file_path = os.path.join(static_folder, 'uiuc-gpa-dataset2023.csv') 
-    df = pd.read_csv(file_path)
-
-    Course = df[(df['Number'] == number) & (df['Subject'] == subject) & (df['Year'] > 2010)]
-    print(Course)
+    Course = df[(df['Number'] == number) & (df['Subject'] == subject) & (df['Year'] >= 2014)]
     Course['GPA1'] = Course.apply(calculate_gpa, axis=1).round(2)
     Course['A%1'] = Course.apply(calculate_ap, axis=1).round(2)
     position = Course.columns.get_loc('W')

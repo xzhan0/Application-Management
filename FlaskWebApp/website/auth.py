@@ -15,11 +15,6 @@ auth = Blueprint('auth',__name__)
 def welcome():
     return render_template("welcome.html")
 
-@auth.route('/member')
-def member():
-    return render_template("member.html")
-
-
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
@@ -95,20 +90,13 @@ def stock_detail(symbol):
     #
     future = predict_next_value(data,5)
     data.append(round(future[0],2))
-    # data.append(future[1])
-    # data.append(future[2])
-    # data.append(future[3])
-    # data.append(future[4])
-    #
+
     for i in range(0,len(index)):
         index[i] = str(index[i])[6:10]
     #
     #print(index)
     index.append("NextDay")
-    # index.append("Day2")
-    # index.append("Day3")
-    # index.append("Day4")
-    # index.append("Day5")
+
     return render_template("stock.html", user = current_user, stock = stock, name = name, price=data, date = index)
 
 ##

@@ -1,106 +1,55 @@
 {% extends "base.html" %} {% block title %}Course{% endblock %}
 
 {% block content%}
-<h2 align="center">Welcome to the home page, {{ user.email.split('@')[0] }}!</h1>
-<h2 align="center">Your added course</h1>
-<!-- <button class="btn btn-primary" onClick="window.open('/home', '_self');">Refresh Stock Price</button> -->
-    <!-- <div class="stock-container">
-    {% for note in user.notes %}
-        <div class="stock" ><a style="font-size:30px;" href="/stock/{{note.data}}">{{ note.data }}</a>
-            <button type="button" class="close" onclick="deleteNote('{{note.id}}')"> 
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <p class="stock-price"> ${{ note.price }}</p>
-        </div> 
-    {% endfor %}
-</div> -->
+<h2 align="center">Welcome to the data page, {{ user.email.split('@')[0] }}!</h1>
+<h2 align="center">Wanna retrieve a UIUC course's GPA info?</h1>
 
-<form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <br />
-    <div align="center">
+<form action="/course" method="POST">
+    <div class="input-container">
+        <label for="form1-input">Subject</label>
+        <input type="text" name="subject" id="subject" placeholder="CS"></input>
+        <label for="form2-input">Course Number</label>
+        <input name="number" id="number" placeholder="124"></input>
+
         <button type="submit" class="btn btn-primary"> Search Course</button>
-        <!-- <a onclick="openPopup()">&#x2753;</a> -->
     </div>
+
 </form>
 
-<!-- The pop-up overlay and box -->
-<div id="popupOverlay" class="overlay">
-    <div class="popup-box">
-        <p><strong>If you don't know the code for your stock, you can inqury it here:</strong></p>
-        <form id="questionForm">
-            <label for="question">Company Name:</label>
-            <input type="text" id="question" name="question">
-            
-            <button type="button" class="btn btn-primary" onclick="redirectToGoogleEvil()">Help Me Search!</button>
-            <button type="button" class="btn btn-primary" onclick="redirectToGoogle()">Quick Search</button>
-        </form>
-        <button class="exit-btn" onclick="closePopup()">Back to Home Page</button>
-        <!-- <button class="exit-btn" onclick="closePopup()">Got it, that's awesome!</button> -->
-    </div>
-</div>
 
-<script>
-    function openPopup() {
-        document.getElementById('popupOverlay').style.display = 'flex';
-    }
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-    }
-</script>
 
-<script>
-    function redirectToGoogle() {
-      var question = document.getElementById("question").value;
-      googleUrl = "https://www.google.com/search?q=What+is+the+stock+code+of+" + encodeURIComponent(question);
-      window.open(googleUrl, '_blank');
-      return false;
+
+<textarea readonly> {{info}}</textarea>
+
+<!-- Styles ===========================================-->
+<style>
+    textarea {
+      width: 100%;
+      height: 800px; 
+      resize: none; 
+      font-family: monospace; 
     }
-    function redirectToGoogleEvil() {
-      var question = document.getElementById("question").value;
-      //googleUrl = "https://www.google.com/search?q=What+is+the+stock+code+of+" + encodeURIComponent(question);
-      //window.open(googleUrl, '_blank');
-      evilUrl = "https://www.lmgt.com/?q=what+is+the+stock+code+of+" + encodeURIComponent(question);
-      window.open(evilUrl, '_blank');
-      return false;
-    }    
-</script>
+</style>
 
 <style>
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-}
+    .input-container {
+      display: flex; /* Use flexbox for layout */
+    }
 
-/* Style for the pop-up box */
-.popup-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: left;
-    max-width: 40%;
-    /* width: 300px;  */
-    position: relative;
-}
-.exit-btn {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            position: relative;
-            left: 35%;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-</style>
+    /* Style for each input field */
+    .input-container input {
+      flex: 1; /* Each input takes up equal space */
+      margin-right: 10px; /* Add some spacing between inputs */
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form {
+      flex: 1; /* Each form takes up equal space */
+      margin-right: 10px; /* Add some space between forms */
+    }
+
+  </style>
+
+
 {% endblock %}
