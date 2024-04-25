@@ -12,6 +12,7 @@ from prophet.plot import plot_plotly
 from plotly import graph_objs as go
 import numpy as np
 import pandas as pd
+import os
 
 views = Blueprint('views',__name__)
 
@@ -45,13 +46,14 @@ def course():
             count = 0
             for char in course:
                 if char.isalpha():
+                    count += 1
                     continue
                 else:
                     subject = course[:count]
-                    number = course[count:]
+                    number = int(course[count:])
                     break
             course_df = get_course_GPA(subject,number)
-            flash(course_df.values, category='error')
+            flash('Done', category='successful')
         except:
             print(subject+str(number))
             flash('The course does not exist', category='error')
@@ -103,12 +105,12 @@ def calculate_ap(row):
 def get_course_GPA(subject,number):
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
-    print('HERE')
-    print(subject+str(number))
-    # path = {{url_for('static', filename='uiuc.jpg')}}
-    df = pd.read_csv('./static/uiuc-gpa-dataset2023.csv')
-    print('HERE2')
+    static_folder = os.path.join(views.root_path, 'static')
+    file_path = os.path.join(static_folder, 'uiuc-gpa-dataset2023.csv') 
+    df = pd.read_csv(file_path)
+
     Course = df[(df['Number'] == number) & (df['Subject'] == subject) & (df['Year'] > 2010)]
+    print(Course)
     Course['GPA1'] = Course.apply(calculate_gpa, axis=1).round(2)
     Course['A%1'] = Course.apply(calculate_ap, axis=1).round(2)
     position = Course.columns.get_loc('W')
@@ -116,6 +118,7 @@ def get_course_GPA(subject,number):
     Course.insert(Course.columns.get_loc('W'), 'A+&A%', Course['A%1'])
     Course = Course.drop('GPA1', axis=1)
     Course = Course.drop('A%1', axis=1)
+  
     return Course
 
 
