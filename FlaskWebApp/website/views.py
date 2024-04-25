@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user 
 from . import db
-from .models import Note
+from .models import College, Note
 from . import db
 import json
 import yfinance as yf
@@ -41,6 +41,26 @@ def home():
 
     return render_template("home.html", user=current_user)
 
+@views.route('/application', methods=['GET','POST'])
+@login_required
+def application():
+    if request.method == 'POST':
+        univ = request.form.get('univ')
+        comment = request.form.get('comment')
+        try:
+            for college in current_user.colleges:
+                if college.data == univ and college.comment==comment:
+                    flash('University Already Exist!', category='error')
+                    return render_template("application.html", user=current_user)
+            new_college = College(data=univ, user_id=current_user.id, link='',sop='',comment=comment)
+            db.session.add(new_college)
+            db.session.commit()
+            flash('University added!', category='success')           
+        except:
+            flash('Error', category='error')
+
+    return render_template("application.html", user=current_user)
+
 @views.route('/course', methods=['GET','POST'])
 @login_required
 def course():
@@ -63,26 +83,26 @@ def course():
     return render_template("course.html", user=current_user, info=info)
 
 
-@views.route('/application', methods=['GET','POST'])
-@login_required
-def application():
-    if request.method == 'POST':
-        univ = request.form.get('univ')
-        try:
-
-            flash('University added!', category='success')           
-        except:
-            flash('Stock Code Error! The stock code doesn\'t exists', category='error')
-
-    return render_template("application.html", user=current_user)
 
 @views.route('/application/<symbol>')
 def application_detail(symbol):
-    # for note in current_user.notes:
-    #     if note.data == symbol:
-    #         stock = note
+    college_name = ''
+    # for college in current_user.notes:
+    #     if college.data == symbol:
+    #         
 
     return render_template("college.html", user = current_user)
+@views.route('/delete-college', methods=['POST'])
+def delete_college():
+    college = json.loads(request.data)
+    collegeId= college['collegeId']
+    college = College.query.get(collegeId)
+    if college:
+        if college.user_id == current_user.id:
+            db.session.delete(college)
+            db.session.commit()
+            flash('University removed!', category='success')
+    return jsonify({})
 
 @views.route('/delete-note', methods=['POST'])
 def delete_note():
