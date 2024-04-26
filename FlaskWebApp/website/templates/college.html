@@ -8,10 +8,26 @@
     <li class="college-info">
         <strong>University:</strong> {{ college.data }}<br>
         <strong>Degree Program:</strong> {{ college.comment }}<br>
+        <strong>Research Area:</strong> {{ college.area }}<br>
         <strong>Deadline:</strong> Dec 15, generally speaking<br>
+        <strong>POI:</strong> Prof. Abc<br>
         <strong>Application Link:</strong> <a href="{{ college.link }}" target="_blank">Apply</a><br>
     </li>
 </ul>
+<form method="POST">
+    <div class="input-container">
+        <label for="form1-input">Professor of Interest</label>
+        <label for="form1-input">POI's homepage</label>.
+    </div>
+    <div class="input-container">
+        <input name="univ" id="univ" class="form-control" placeholder=""></input>
+        <input name="comment" id="comment" class="form-control" placeholder=""></input>
+    </div>
+    <div align="center">
+        <button type="submit" class="btn btn-primary"> Add a Professor</button>
+    </div>
+</form>
+
 
 <div class="sop-box">
     <h2>Statement of Purpose (Word count: <span id="wordCount"></span>) </h2>
@@ -74,6 +90,25 @@
       font-family: monospace; 
       padding-top: 10px;
       padding-bottom: 10px;
+    }
+
+    .input-container {
+      display: flex; /* Use flexbox for layout */
+    }
+
+    /* Style for each input field */
+    .input-container input {
+      flex: 1; /* Each input takes up equal space */
+      margin-right: 10px; /* Add some spacing between inputs */
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+
+    .input-container label {
+      flex: 1; /* Each input takes up equal space */
+      margin-right: 10px; /* Add some spacing between inputs */
+      margin-left: 10px;
+      margin-bottom: 10px;
     }
 
 </style>
