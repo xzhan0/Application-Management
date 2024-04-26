@@ -10,7 +10,7 @@
             <button type="button" class="close" onclick="deleteCollege('{{college.id}}')"> 
                 <span aria-hidden="true">&times;</span>
             </button>
-            <p class="stock-price"><a href= "{{ college.link }}" target=”_blank”>{{ college.comment }}</a>  </p>
+            <p class="stock-price"><a href= "{{ college.link }}" target=”_blank” style="font-size:20px;">{{ college.comment }}</a>  </p>
         </div> 
     {% endfor %}
 </div>
@@ -43,13 +43,13 @@
 <!-- The pop-up overlay and box -->
 <div id="popupOverlay" class="overlay">
     <div class="popup-box">
-        <p><strong>If you don't know the University's full name, you can inqury here:</strong></p>
+        <p><strong>If you don't know which University to apply for, you can inqury here:</strong></p>
         <form id="questionForm">
-            <label for="question">University Name:</label>
+            <label for="question">I want to apply for Top </label>
             <input type="text" id="question" name="question">
-            
+            <label for="question"> Universities</label>
             <button type="button" class="btn btn-primary" onclick="redirectToGoogleEvil()">Help Me Search!</button>
-            <button type="button" class="btn btn-primary" onclick="redirectToGoogle()">Quick Search</button>
+            <!-- <button type="button" class="btn btn-primary" onclick="redirectToGoogle()">Quick Search</button> -->
         </form>
         <button class="exit-btn" onclick="closePopup()">Back to Home Page</button>
         <!-- <button class="exit-btn" onclick="closePopup()">Got it, that's awesome!</button> -->
@@ -68,7 +68,7 @@
 <script>
     function redirectToGoogle() {
       var question = document.getElementById("question").value;
-      googleUrl = "https://www.google.com/search?q=What+is+the+full+name+of+" + encodeURIComponent(question);
+      googleUrl = "https://www.google.com/search?q=Top+" + encodeURIComponent(question) + "+Universities+in+the+world";
       window.open(googleUrl, '_blank');
       return false;
     }
@@ -76,7 +76,7 @@
       var question = document.getElementById("question").value;
       //googleUrl = "https://www.google.com/search?q=What+is+the+stock+code+of+" + encodeURIComponent(question);
       //window.open(googleUrl, '_blank');
-      evilUrl = "https://www.lmgt.com/?q=what+is+the+full+name+of+" + encodeURIComponent(question);
+      evilUrl = "https://www.lmgt.com/?q=Top+" + encodeURIComponent(question) + "+Universities+in+the+world";
       window.open(evilUrl, '_blank');
       return false;
     }    
