@@ -48,13 +48,13 @@ def application():
         univ = request.form.get('univ')
         comment = request.form.get('comment')
         link = request.form.get('link')
-        sop = request.form.get('sop')
+        area = request.form.get('area')
         try:
             for college in current_user.colleges:
                 if college.data == univ and college.comment==comment:
                     flash('University Already Exist!', category='error')
                     return render_template("application.html", user=current_user)
-            new_college = College(data=univ, user_id=current_user.id, link=link,sop=sop,comment=comment)
+            new_college = College(data=univ, user_id=current_user.id, link=link,area=area,comment=comment,sop='Nothing Yet')
             db.session.add(new_college)
             db.session.commit()
             flash('University added!', category='success')           

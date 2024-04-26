@@ -11,10 +11,11 @@ class Note(db.Model):
 
 class College(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(1000)) ##College name
+    data = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     link = db.Column(db.String(1000))
+    area = db.Column(db.String(1000))
     sop = db.Column(db.String(100000))
     comment = db.Column(db.String(10000))
 
