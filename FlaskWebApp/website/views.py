@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect
 from flask_login import login_required, current_user 
 from . import db
 from .models import College, Note
@@ -48,12 +48,13 @@ def application():
         univ = request.form.get('univ')
         comment = request.form.get('comment')
         link = request.form.get('link')
+        sop = request.form.get('sop')
         try:
             for college in current_user.colleges:
                 if college.data == univ and college.comment==comment:
                     flash('University Already Exist!', category='error')
                     return render_template("application.html", user=current_user)
-            new_college = College(data=univ, user_id=current_user.id, link=link,sop='',comment=comment)
+            new_college = College(data=univ, user_id=current_user.id, link=link,sop=sop,comment=comment)
             db.session.add(new_college)
             db.session.commit()
             flash('University added!', category='success')           
@@ -85,14 +86,29 @@ def course():
 
 
 
-@views.route('/application/<symbol>')
+@views.route('/application/<symbol>', methods=['GET','POST'])
 def application_detail(symbol):
-    college_name = ''
-    # for college in current_user.notes:
-    #     if college.data == symbol:
-    #         
+    if request.method == 'POST':
+        sop = request.form.get('new_sop')
+        for college in current_user.colleges:
+            if college.data == symbol:
+                college.sop = sop
+                db.session.commit()
+                flash('Statement of Purpose updated!', category='success')
+                return render_template("college.html", user = current_user, college = college)
+        flash('Faied to update your SOP, try again', category='error')
+        return render_template("application.html", user = current_user)
+    else:
+        college_name = symbol
+        college = ''
+        for co in current_user.colleges:
+            if co.data == symbol:
+                college = co
+                return render_template("college.html", user = current_user, college = co)
+        flash('The university does not exist', category='error')    
+        return render_template("application.html", user = current_user)
 
-    return render_template("college.html", user = current_user)
+
 @views.route('/delete-college', methods=['POST'])
 def delete_college():
     college = json.loads(request.data)

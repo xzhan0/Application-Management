@@ -1,6 +1,122 @@
 {% extends "base.html" %} {% block title %}Course{% endblock %}
 
 {% block content%}
-<h2 align="center">Welcome to the University page of aab, {{ user.email.split('@')[0] }}!</h1>
+<h1 align="center">Welcome to the University page of <span style="color:#ff4113;">{{ college.data }}</span>, {{ user.email.split('@')[0] }}!</h1>
 
+<h1>College Application Information</h1>
+<ul>
+    <li class="college-info">
+        <strong>University:</strong> {{ college.data }}<br>
+        <strong>Degree Program:</strong> {{ college.comment }}<br>
+        <strong>Deadline:</strong> Dec 15, generally speaking<br>
+        <strong>Application Link:</strong> <a href="{{ college.link }}" target="_blank">Apply</a><br>
+    </li>
+</ul>
+
+<div class="sop-box">
+    <h2>Statement of Purpose (Word count: <span id="wordCount"></span>) </h2>
+    <textarea readonly id="sop"> {{ college.sop }}</textarea>
+</div>
+
+<div align="center">
+    <button onclick="toggleTextarea()" class="btn btn-primary" style="margin: 10px;">Update My SOP</button>
+</div>
+
+<form method="POST">
+    <h2>New Statement of Purpose (Word count: <span id="wordCount2"></span>) </h2>
+    <textarea name="new_sop" id="new_sop" class="invi-textarea"></textarea>
+    <div align="center">
+        <button onclick="toggleTextarea()" class="btn btn-primary" id="submit_button" style="display: none; margin: 10px;">Submit this version</button>
+    </div>
+</form>
+    
+
+
+
+
+<style>
+    /* Basic styling */
+    h1 {
+        text-align: center;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 20px;
+    }
+    .college-info {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
+    /* Styling for SOP box */
+    .sop-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    .invi-textarea {
+            display: none; /* Hide the textarea by default */
+            width: 100%;
+            height: 800px; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Ensure padding is included in the total width */
+            font-size: 16px; /* Adjust font size as needed */
+            resize: none; /* Prevent resizing of the textarea */
+    }
+
+    textarea {
+      width: 100%;
+      height: 800px; 
+      resize: none; 
+      font-family: monospace; 
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+</style>
+
+
+<script>
+    countWords();
+    countWordsNew();
+    setInterval(countWordsNew, 500);
+    
+    function toggleTextarea() {
+        var textarea = document.getElementById("new_sop");
+        var newButton = document.getElementById("submit_button");
+        textarea.style.display = "block";
+        newButton.style.display = "inline-block";
+        // if (textarea.style.display === "none") {
+        //     textarea.style.display = "block";
+        //     newButton.style.display = "inline-block";
+        // } else {
+        //     textarea.style.display = "none";
+        //     newButton.style.display = "none";
+        // }
+    }
+
+    function countWords() {
+        var textarea = document.getElementById("sop");
+            var wordCount = document.getElementById("wordCount");
+            var text = textarea.value.trim(); // Remove leading/trailing whitespace
+            var words = text.split(/\s+/); // Split text into words by whitespace
+            var count = words.filter(function(word) {
+                return word.length > 0; // Filter out empty strings (multiple consecutive whitespaces)
+            }).length;
+            wordCount.textContent = count;
+    }
+    function countWordsNew() {
+        var textarea = document.getElementById("new_sop");
+            var wordCount = document.getElementById("wordCount2");
+            var text = textarea.value.trim(); // Remove leading/trailing whitespace
+            var words = text.split(/\s+/); // Split text into words by whitespace
+            var count = words.filter(function(word) {
+                return word.length > 0; // Filter out empty strings (multiple consecutive whitespaces)
+            }).length;
+            wordCount.textContent = count;
+    }
+</script>
 {% endblock %}
