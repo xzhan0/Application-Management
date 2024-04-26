@@ -10,7 +10,7 @@
         <strong>Degree Program:</strong> {{ college.comment }}<br>
         <strong>Research Area:</strong> {{ college.area }}<br>
         <strong>Deadline:</strong> Dec 15, generally speaking<br>
-        <strong>POI:</strong> Prof. Abc<br>
+        <strong>POI:</strong> <a href= "{{ college.poi_link }}" target=”_blank”>Prof. {{ college.poi }}</a><br>
         <strong>Application Link:</strong> <a href="{{ college.link }}" target="_blank">Apply</a><br>
     </li>
 </ul>
@@ -20,8 +20,8 @@
         <label for="form1-input">POI's homepage</label>.
     </div>
     <div class="input-container">
-        <input name="univ" id="univ" class="form-control" placeholder=""></input>
-        <input name="comment" id="comment" class="form-control" placeholder=""></input>
+        <input name="poi" id="poi" class="form-control" placeholder=""></input>
+        <input name="poi_link" id="poi_link" class="form-control" placeholder=""></input>
     </div>
     <div align="center">
         <button type="submit" class="btn btn-primary"> Add a Professor</button>

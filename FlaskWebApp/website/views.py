@@ -89,6 +89,17 @@ def course():
 @views.route('/application/<symbol>', methods=['GET','POST'])
 def application_detail(symbol):
     if request.method == 'POST':
+        poi = request.form.get('poi')
+        poi_link = request.form.get('poi_link')
+        if poi and poi_link:
+            for college in current_user.colleges:
+                if college.data == symbol:
+                    college.poi = poi
+                    college.poi_link = poi_link
+                    db.session.commit()
+                    flash('POI updated!', category='success')
+                    return render_template("college.html", user = current_user, college = college)
+        
         sop = request.form.get('new_sop')
         for college in current_user.colleges:
             if college.data == symbol:
@@ -105,7 +116,7 @@ def application_detail(symbol):
             if co.data == symbol:
                 college = co
                 return render_template("college.html", user = current_user, college = co)
-        flash('The university does not exist', category='error')    
+        flash('The page does not exist', category='error')    
         return render_template("application.html", user = current_user)
 
 

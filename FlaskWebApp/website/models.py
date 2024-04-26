@@ -18,7 +18,8 @@ class College(db.Model):
     area = db.Column(db.String(1000))
     sop = db.Column(db.String(100000))
     comment = db.Column(db.String(10000))
-
+    poi = db.Column(db.String(1000))
+    poi_link = db.Column(db.String(1000))
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
