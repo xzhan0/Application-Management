@@ -12,6 +12,9 @@ from prophet.plot import plot_plotly
 from plotly import graph_objs as go
 import numpy as np
 import pandas as pd
+from flask import Flask
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 import os
 
 views = Blueprint('views',__name__)

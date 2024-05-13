@@ -31,8 +31,10 @@
 
 <div class="sop-box">
     <h2>Statement of Purpose (Word count: <span id="wordCount"></span>) </h2>
+    <button onclick="saveAsPDF()" class="btn btn-primary" style="margin: 10px;">Save as PDF</button>
     <textarea readonly id="sop"> {{ college.sop }}</textarea>
 </div>
+
 
 <div align="center">
     <button onclick="toggleTextarea()" class="btn btn-primary" style="margin: 10px;">Update My SOP</button>
@@ -112,8 +114,17 @@
     }
 
 </style>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script>
+    function saveAsPDF() {
+        var content = document.getElementById('sop').value;
+        var doc = new jsPDF();
+        doc.text(content, 10, 10);
+        //vscode can't correctly recognize what I am doing here, however it is fine.
+        var name = 'SOP_' + '{{ user.email.split('@')[0] }}' + '_'+ '{{ college.data }}' +'.pdf'
+        doc.save(name);
+    }
+</script>
 <script>
     countWords();
     countWordsNew();
