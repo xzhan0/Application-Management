@@ -91,6 +91,8 @@ def course():
 
 @views.route('/application/<symbol>', methods=['GET','POST'])
 def application_detail(symbol):
+    degree = symbol.split("-")[1].replace('%20',' ')
+    symbol = symbol.split("-")[0]
     if request.method == 'POST':
         poi = request.form.get('poi')
         poi_link = request.form.get('poi_link')
@@ -116,7 +118,7 @@ def application_detail(symbol):
         college_name = symbol
         college = ''
         for co in current_user.colleges:
-            if co.data == symbol:
+            if co.data == symbol and co.comment == degree:
                 college = co
                 return render_template("college.html", user = current_user, college = co)
         flash('The page does not exist', category='error')    

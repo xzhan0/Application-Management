@@ -6,7 +6,7 @@
 
 <div class="stock-container">
     {% for college in user.colleges %}
-        <div class="stock" ><a style="font-size:30px;" href="/application/{{college.data}}">{{ college.data }}</a>   
+        <div class="stock" ><a style="font-size:30px;" href="/application/{{college.data}}-{{college.comment}}">{{ college.data }}</a>   
             <button type="button" class="close" onclick="deleteCollege('{{college.id}}')"> 
                 <span aria-hidden="true">&times;</span>
             </button>
