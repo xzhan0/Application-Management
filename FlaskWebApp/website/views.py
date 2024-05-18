@@ -98,7 +98,7 @@ def application_detail(symbol):
         poi_link = request.form.get('poi_link')
         if poi and poi_link:
             for college in current_user.colleges:
-                if college.data == symbol:
+                if college.data == symbol and college.comment == degree:
                     college.poi = poi
                     college.poi_link = poi_link
                     db.session.commit()
