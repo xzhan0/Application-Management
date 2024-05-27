@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect
 from flask_login import login_required, current_user 
 from . import db
-from .models import College, Note
+from .models import College, Note, Professor
 from . import db
 import json
 import yfinance as yf
@@ -96,16 +96,20 @@ def application_detail(symbol):
     if request.method == 'POST':
         poi = request.form.get('poi')
         poi_link = request.form.get('poi_link')
+        poi_note = request.form.get('poi_note')
         if poi and poi_link:
             for college in current_user.colleges:
                 if college.data == symbol and college.comment == degree:
-                    college.poi = poi
-                    college.poi_link = poi_link
+                    new_prof = Professor(name=poi, college_id=college.id, link=poi_link,note=poi_note)
+                    db.session.add(new_prof)
                     db.session.commit()
                     flash('POI updated!', category='success')
                     return render_template("college.html", user = current_user, college = college)
         
         sop = request.form.get('new_sop')
+        if not sop:
+            flash('Something goes wrong, please retry', category='error')    
+            return render_template("application.html", user = current_user)
         for college in current_user.colleges:
             if college.data == symbol:
                 college.sop = sop

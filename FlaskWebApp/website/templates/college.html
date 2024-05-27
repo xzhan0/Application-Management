@@ -10,21 +10,28 @@
         <strong>Degree Program:</strong> {{ college.comment }}<br>
         <strong>Research Area:</strong> {{ college.area }}<br>
         <strong>Deadline:</strong> Dec 15, generally speaking<br>
-        <strong>POI:</strong> <a href= "{{ college.poi_link }}" target=”_blank”>Prof. {{ college.poi }}</a><br>
         <strong>Application Link:</strong> <a href="{{ college.link }}" target="_blank">Apply</a><br>
+    </li>
+    <li class="college-info">
+        <strong>POI List:</strong><br>
+        {% for professor in college.professors %}
+        <a href= "{{ professor.link }}" target=”_blank”>Prof. {{ professor.name }}</a><p style="display: inline;"> Research Interest: {{ professor.note }}</p><br>
+        {% endfor %}
     </li>
 </ul>
 <form method="POST">
     <div class="input-container">
         <label for="form1-input">Professor of Interest</label>
-        <label for="form1-input">POI's homepage</label>.
+        <label for="form1-input">POI's Homepage</label>
+        <label for="form1-input">POI's Reseach Topic</label>.
     </div>
     <div class="input-container">
         <input name="poi" id="poi" class="form-control" placeholder=""></input>
         <input name="poi_link" id="poi_link" class="form-control" placeholder=""></input>
+        <input name="poi_note" id="poi_note" class="form-control" placeholder=""></input>
     </div>
     <div align="center">
-        <button type="submit" class="btn btn-primary"> Update Professor of Interest</button>
+        <button type="submit" class="btn btn-primary"> Add Professor of Interest</button>
     </div>
 </form>
 
