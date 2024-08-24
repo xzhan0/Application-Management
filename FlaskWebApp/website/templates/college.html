@@ -39,7 +39,7 @@
 <div class="sop-box">
     <h2>Statement of Purpose (Word count: <span id="wordCount"></span>) </h2>
     <button onclick="saveAsPDF()" class="btn btn-primary" style="margin: 10px;">Save as PDF</button>
-    <textarea readonly id="sop"> {{ college.sop }}</textarea>
+    <textarea readonly id="sop">{{ college.sop }}</textarea>
 </div>
 
 
@@ -49,7 +49,7 @@
 
 <form method="POST">
     <h2>New Statement of Purpose (Word count: <span id="wordCount2"></span>) </h2>
-    <textarea name="new_sop" id="new_sop" class="invi-textarea"></textarea>
+    <textarea name="new_sop" id="new_sop" class="invi-textarea">{{ college.sop }}</textarea>
     <div align="center">
         <button onclick="toggleTextarea()" class="btn btn-primary" id="submit_button" style="display: none; margin: 10px;">Submit this version</button>
     </div>
